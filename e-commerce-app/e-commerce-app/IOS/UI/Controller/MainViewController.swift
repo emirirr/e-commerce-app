@@ -8,6 +8,10 @@ import SwiftUI
 import UIKit
 import Foundation
 class MainViewController : UIViewController, UIDocumentPickerDelegate{
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
     
     init() {
             super.init(nibName: nil, bundle: nil)
