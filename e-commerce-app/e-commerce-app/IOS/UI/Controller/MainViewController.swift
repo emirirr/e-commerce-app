@@ -4,6 +4,7 @@
 //
 //  Created by İsmail Emir Tiryaki on 13.10.2024.
 //
+
 import SwiftUI
 import UIKit
 import Foundation
@@ -16,6 +17,12 @@ class MainViewController : UIViewController, UIDocumentPickerDelegate{
     init() {
             super.init(nibName: nil, bundle: nil)
             presentMainView()
+        let productService = ProductService()
+        Task{
+            let repsonse = await productService.getInvoicesList()
+
+            print(repsonse?.urunler?[0].ad ?? "Valahi gelmedi")
+        }
         }
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
