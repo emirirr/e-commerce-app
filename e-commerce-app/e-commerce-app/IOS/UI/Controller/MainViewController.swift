@@ -9,24 +9,30 @@ import SwiftUI
 import UIKit
 import Foundation
 class MainViewController : UIViewController, UIDocumentPickerDelegate{
+    let mainViewModel = MainViewModel()
+    let productViewModel = ProductListViewModel()
+    let basketDetailViewModel = BasketDetailViewModel()
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     init() {
-            super.init(nibName: nil, bundle: nil)
-            presentMainView()
-        let productService = ProductService()
+        super.init(nibName: nil, bundle: nil)
+        presentMainView()
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
         Task{
-            let repsonse = await productService.getInvoicesList()
-
-            print(repsonse?.urunler?[0].ad ?? "Valahi gelmedi")
+            await productViewModel.getProductList()
+            await basketDetailViewModel.getBasketDetail()
         }
-        }
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
+    }
+    
     private lazy var mainContentView : UIView = {
         let view = UIView()
         view.backgroundColor = .clear
@@ -41,7 +47,15 @@ class MainViewController : UIViewController, UIDocumentPickerDelegate{
         mainContentView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         
         do {
-            let mainViewSwiftUI = MainView()
+            let mainViewSwiftUI = MainView(mainViewModel: self.mainViewModel, productListViewModel: self.productViewModel, basketDetailViewModel: self.basketDetailViewModel, onTapDetail: {product in
+                
+                let productDetailViewModel = ProductDetailViewModel()
+                productDetailViewModel.detailProduct = product
+                let productDetailViewController = ProductDetailViewController(productDetailViewModel: productDetailViewModel)
+                self.navigationController?.pushViewController(productDetailViewController, animated: true)
+
+                
+            })
             let mainView = UIHostingController(rootView: mainViewSwiftUI)
             mainView.view.translatesAutoresizingMaskIntoConstraints = false
             mainContentView.addSubview(mainView.view)

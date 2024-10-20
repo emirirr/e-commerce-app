@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProductModel : Codable, Hashable {
+class ProductModel : Codable {
     
     public var id: Int? = 0
     public var ad: String? = ""
@@ -15,11 +15,5 @@ class ProductModel : Codable, Hashable {
     public var kategori: String? = ""
     public var fiyat: Int? = 0
     public var marka: String? = ""
-    
-    static func == (lhs: ProductModel, rhs: ProductModel) -> Bool {
-        return false
-    }
-    func hash(into hasher: inout Hasher) {
 
-    }
 }

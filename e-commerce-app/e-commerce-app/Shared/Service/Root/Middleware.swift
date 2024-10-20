@@ -24,12 +24,24 @@ class Middleware {
     @discardableResult
     public func send<Request: TransferConnection>(request: Request) async throws -> Request.Response? {
         guard let urlRequest = request.buildURLRequest() else { return nil }
-        let result = try await session.data(for: urlRequest)
-        try validate(data: result.0, response: result.1)
         
-        let decodedResponse = try decoder.decode(Request.Response.self, from: result.0)
-        return decodedResponse
+        let (data, response) = try await session.data(for: urlRequest)
+        try validate(data: data, response: response)
+        
+        guard let jsonString = String(data: data, encoding: .utf8) else {
+            throw APIClientError.apiError("Failed to convert data to string.")
+        }
+        
+        guard let jsonData = jsonString.data(using: .utf8) else {
+            throw APIClientError.apiError("Failed to convert string back to data.")
+        }
+
+       
+        let responseModel = try JSONDecoder().decode(Request.Response.self, from: jsonData)
+
+        return responseModel
     }
+
     
     func validate(data: Data, response: URLResponse) throws {
         guard let code = (response as? HTTPURLResponse)?.statusCode else {

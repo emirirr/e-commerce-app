@@ -14,9 +14,9 @@ class RequestBuilder<T: Codable>: TransferConnection {
     internal var path: String?
     internal var method: HTTPMethod?
     internal var body: Data?
-    internal var parameters: [String: String]?
+    internal var parameters: [String: Any]?
     
-    init( path: String?, method: HTTPMethod?, body: Data?, parameters: [String: String]?) {
+    init( path: String?, method: HTTPMethod?, body: Data?, parameters: [String: Any]?) {
      
         self.path = path
         self.method = method

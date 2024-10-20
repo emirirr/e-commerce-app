@@ -13,7 +13,6 @@ struct AppBarComponent: View {
             
             Button(action: {
                 
-                
             }) {
                 Label("", systemImage: "text.alignleft")
                     .padding(.left,10)
@@ -23,16 +22,16 @@ struct AppBarComponent: View {
             Image("logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 90, height: 90)
+                .frame(width: 90)
             
             Spacer()
             Image("avatar")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 45, height: 45)
-                .padding(.right,10)
+                .frame(width: 45)
+                .padding(.right,10).padding(.bottom,10)
             
-                    }
+        }
     }
     
 }

@@ -6,10 +6,11 @@
 //
 
 import Foundation
+
 class ProductService : ObservableObject{
     private let mw : Middleware = Middleware()
     
-    public func getInvoicesList() async -> ProductListModel? {
+    public func getProductList() async -> ProductListModel? {
         
         let productListRequest = GetProductRequest<ProductListModel>()
         do {
